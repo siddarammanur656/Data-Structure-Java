@@ -13,41 +13,39 @@ public class Spiral_Matrix_54 {
         System.out.println(spiralOrder(matrix));
     }
     public static List<Integer> spiralOrder(int[][] matrix) {
-        int m=matrix.length;
-        int n=matrix[0].length;
+        int r1=0,r2=matrix.length-1;
+        int c1=0,c2=matrix[0].length-1;
 
-        int top=0,bottom=m-1,left=0,right=n-1;
-        ArrayList<Integer> arr= new ArrayList<>();
+        ArrayList<Integer> Ans= new ArrayList<>();
 
-        while(top<=bottom && left<=right){
-            // Print top row from left to right
-            for (int i = left; i <= right; ++i) {
-                arr.add(matrix[top][i]);
+        while(r1<=r2 && c1<=c2){
+            //move left to right
+            for(int c=c1; c<=c2; c++){
+                Ans.add(matrix[r1][c]);
             }
-            top++;
 
-            // Print right column from top to bottom
-            for (int i = top; i <= bottom; ++i) {
-                arr.add(matrix[i][right]);
+            //move right column move down
+            for(int r=r1+1; r<=r2; r++){
+                Ans.add(matrix[r][c2]);
             }
-            right--;
 
-            // Print bottom row from right to left (if exists)
-            if (top <= bottom) {
-                for (int i = right; i >= left; --i) {
-                    arr.add(matrix[bottom][i]);
+            //move right to left
+            //move up
+            if(r1 < r2 && c1 < c2){
+                //move right to left
+                for(int c=c2-1; c>=c1; c--){
+                    Ans.add(matrix[r2][c]);
                 }
-                bottom--;
-            }
-
-            // Print left column from bottom to top (if exists)
-            if (left <= right) {
-                for (int i = bottom; i >= top; --i) {
-                    arr.add(matrix[i][left]);
+                //move up bottom to top
+                for(int r=r2-1; r>r1; r--){
+                    Ans.add(matrix[r][c1]);
                 }
-                left++;
             }
+            r1++;
+            r2--;
+            c1++;
+            c2--;
         }
-        return arr;
+        return Ans;
     }
 }
