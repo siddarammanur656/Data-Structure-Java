@@ -8,8 +8,26 @@ public class Max_Value_of_Equation_1499 {
         int k=1;
         System.out.println(findMaxValueOfEquation(points,k));
     }
-    //brute force approch good for small arrays and it will not work big array it will generate time limit exceeded;
     public static int findMaxValueOfEquation(int[][] points, int k) {
+        PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a,b)-> b[0]-a[0]);
+        int maxValue = Integer.MIN_VALUE;
+        for(int[] point : points){
+            int xj = point[0];
+            int yj = point[1];
+            while(!maxHeap.isEmpty() && xj - maxHeap.peek()[1] > k){
+                maxHeap.poll();
+            }
+            if(!maxHeap.isEmpty()){
+                maxValue = Math.max(maxValue, yj+xj+maxHeap.peek()[0]);
+            }
+           
+            maxHeap.offer(new int[] {yj-xj, xj});
+        }
+        return maxValue;
+    }
+    
+    //brute force approch good for small arrays and it will not work big array it will generate time limit exceeded;
+    public static int findMaxValueOfEquation2(int[][] points, int k) {
         int max=Integer.MIN_VALUE;
 
         for(int i=0; i<points.length; i++){
@@ -27,33 +45,5 @@ public class Max_Value_of_Equation_1499 {
             }
         }
         return max;
-    }
-    public static int findMaxValueOfEquation1(int[][] points, int k) {
-        int maxValue = Integer.MIN_VALUE;
-
-        // PriorityQueue as a max-heap: stores [y - x, x]
-        PriorityQueue<int[]> maxHeap = new PriorityQueue<>(
-                (a, b) -> Integer.compare(b[0], a[0])
-        );
-
-        for (int[] point : points) {
-            int x = point[0];
-            int y = point[1];
-
-            // Remove points that are too far from current x
-            while (!maxHeap.isEmpty() && x - maxHeap.peek()[1] > k) {
-                maxHeap.poll();
-            }
-
-            // If a valid candidate exists, update the max value
-            if (!maxHeap.isEmpty()) {
-                int candidate = maxHeap.peek()[0]; // y_i - x_i
-                maxValue = Math.max(maxValue, x + y + candidate);
-            }
-
-            // Add current point to the heap
-            maxHeap.offer(new int[]{y - x, x});
-        }
-        return maxValue;
     }
 }
